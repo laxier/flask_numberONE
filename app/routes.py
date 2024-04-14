@@ -24,7 +24,7 @@ def index():
         db.session.commit()
         flash('Your post is now live!')
         return redirect(url_for('index'))
-    posts = Post.query.order_by(Post.timestamp).all()
+    posts = Post.query.order_by(Post.timestamp).all()[::-1]
     return render_template("index.html", title='Home Page', form=form, posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -61,3 +61,17 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/delete/<int:id>')
+def delete_post(id):
+    to_delete = Post.query.get_or_404(id)
+    if to_delete.author.id == current_user.id or current_user.username == 'admin':
+        try:
+            db.session.delete(to_delete)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "There was a problem"
+    else:
+        return "Action is not allowed"
+    return render_template('register.html', title='Register', form=form)

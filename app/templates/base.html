@@ -1,60 +1,64 @@
 <html>
-    <head>
-        {% if title %}
-        <title>{{ title }} - whatsapp школа</title>
-        {% else %}
-        <title>whatsapp школа</title>
-        {% endif %}
-        {% block styles %}
-            <!-- Bootstrap CSS -->
-            {{ bootstrap.load_css() }}
-        {% endblock %}
-    </head>
-    <body>
-    <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <div class="col-md-3 mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-          <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-        </a>
-      </div>
+<head>
+    {% if title %}
+    <title>{{ title }} - whatsapp школа</title>
+    {% else %}
+    <title>whatsapp школа</title>
+    {% endif %}
+    {% block styles %}
+    {{ bootstrap.load_css() }}
+    {% endblock %}
+</head>
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
+            style="padding-left: calc(var(--bs-gutter-x)* .5); padding-right: calc(var(--bs-gutter-x)* .5)">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+        </div>
 
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="/index" class="nav-link px-2 link-secondary">Home</a></li>
-<!--        <li><a href="#" class="nav-link px-2">Features</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">Pricing</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">FAQs</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2">About</a></li>-->
-      </ul>
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/index" class="nav-link px-2 link-secondary">Home</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">About</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">Media</a></li>
+            <li><a class="nav-link px-2 link-dark">Нейронки Саши Осинского:</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">1</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">2</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">3</a></li>
+        </ul>
 
-      <div class="col-md-3 text-end">
-          {% if current_user.is_anonymous %}
-          <a class="btn btn-outline-primary me-2" href="{{ url_for('login') }}">Login</a>
-          {% else %}
-          <a class="btn btn-outline-primary me-2" href="{{ url_for('logout') }}"> {{current_user.username}} <br> Log-out</a>
-          {% endif %}
-      </div>
+        <div class="col-md-3 text-end">
+            {% if current_user.is_anonymous %}
+            <a class="btn btn-outline-primary me-2" href="{{ url_for('login') }}">Login</a>
+            {% else %}
+            <a class="btn btn-outline-primary me-2" href="{{ url_for('logout') }}"> {{current_user.username}} <br>
+                Log-out</a>
+            {% endif %}
+        </div>
     </header>
-  </div>
-<!--        <div>-->
-<!--            Microblog:-->
-<!--            <a href="{{ url_for('index') }}">Home</a>-->
-<!--            {% if current_user.is_anonymous %}-->
-<!--            <a href="{{ url_for('login') }}">Login</a>-->
-<!--            {% else %}-->
-<!--            <a href="{{ url_for('logout') }}">Logout</a>-->
-<!--            {% endif %}-->
-<!--        </div>-->
-<!--        <hr>-->
-<!--        {% with messages = get_flashed_messages() %}-->
-<!--        {% if messages %}-->
-<!--        <ul>-->
-<!--            {% for message in messages %}-->
-<!--            <li>{{ message }}</li>-->
-<!--            {% endfor %}-->
-<!--        </ul>-->
-<!--        {% endif %}-->
-<!--        {% endwith %}-->
-        {% block content %}{% endblock %}
-    </body>
+</div>
+
+<body class="d-flex flex-column h-100">
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="container">
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+</body>
+<footer class="footer mt-auto py-3 bg-body-tertiary"
+">
+<div class="container">
+    <span class="text-body-secondary">ПМ23-2, 2024</span>
+</div>
+</footer>
 </html>
