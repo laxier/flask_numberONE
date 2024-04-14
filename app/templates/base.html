@@ -31,7 +31,7 @@
           {% if current_user.is_anonymous %}
           <a class="btn btn-outline-primary me-2" href="{{ url_for('login') }}">Login</a>
           {% else %}
-          <a class="btn btn-outline-primary me-2" href="/logout">Log-out</a>
+          <a class="btn btn-outline-primary me-2" href="{{ url_for('logout') }}"> {{current_user.username}} <br> Log-out</a>
           {% endif %}
       </div>
     </header>

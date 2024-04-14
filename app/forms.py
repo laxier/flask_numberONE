@@ -26,3 +26,6 @@ class RegistrationForm(FlaskForm):
         user = db.session.scalar(sa.select(User).where(User.email == email.data))
         if user is not None:
             raise ValidationError('Please use a different email address.')
+    def validate_password(self, password):
+        if len(password.data) < 8:
+            raise ValidationError('Your password should bot be less than 8 symbols')
