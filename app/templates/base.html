@@ -8,6 +8,8 @@
     {% block styles %}
     {{ bootstrap.load_css() }}
     {% endblock %}
+    {{ moment.include_moment() }}
+    {{ moment.locale(auto_detect=True) }}
 </head>
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
