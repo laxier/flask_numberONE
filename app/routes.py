@@ -75,3 +75,7 @@ def delete_post(id):
     else:
         return "Action is not allowed"
     return render_template('register.html', title='Register', form=form)
+
+@app.route("/info")
+def info():
+    return render_template('info.html')
