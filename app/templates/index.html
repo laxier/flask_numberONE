@@ -27,10 +27,9 @@
             post.author.username }} says: </h1>
         <p class="lead my-3" style="font-size: 20px;">{{ post.body }}</p>
         {% if post.image_path %}
-        <img src="../{{post.image_path}}" alt="Post Image" height="400">
+        <p class="lead my-3" style="font-size: 20px;"><img src="../{{post.image_path}}" alt="Post Image" height="400"></p>
         {% endif %}
         {% if current_user.id == post.author.id or current_user.username == 'admin'%}
-        <br>
         <a href="/delete/{{post.id}}" class="btn btn-outline-secondary">Delete</a>
         {% endif %}
         <!--                  <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue reading...</a></p>-->

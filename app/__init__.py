@@ -5,8 +5,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 from flask_moment import Moment
+import os
 
-app = Flask(__name__, static_folder="D:/flaskProject/static")
+app = Flask(__name__, static_folder=os.path.join(os.getcwd(), 'static'))
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)
