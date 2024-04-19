@@ -9,9 +9,12 @@ from flask_login import current_user, login_user
 from flask_login import logout_user
 from flask_login import login_required
 from urllib.parse import urlsplit
+from werkzeug.utils import secure_filename
 import sqlalchemy as sa
 from app import db
 from app.models import User
+
+import os
 
 @app.route('/', methods=["POST", "GET"])
 @app.route('/index', methods=["POST", "GET"])
@@ -19,13 +22,21 @@ from app.models import User
 def index():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user)
+        file_path = ""
+        file = form.upload.data
+        if file:
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+        post = Post(body=form.post.data, author=current_user, image_path=file_path)
         db.session.add(post)
         db.session.commit()
+        flash('Your file has been uploaded successfully!')
         flash('Your post is now live!')
         return redirect(url_for('index'))
     posts = Post.query.order_by(Post.timestamp).all()[::-1]
     return render_template("index.html", title='Home Page', form=form, posts=posts)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -44,6 +55,7 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -57,16 +69,22 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
 
 @app.route('/delete/<int:id>')
 def delete_post(id):
     to_delete = Post.query.get_or_404(id)
     if to_delete.author.id == current_user.id or current_user.username == 'admin':
         try:
+            file_path=to_delete.image_path
+            if os.path.exists(file_path):
+                os.remove(file_path)
             db.session.delete(to_delete)
             db.session.commit()
             return redirect('/')
@@ -75,6 +93,7 @@ def delete_post(id):
     else:
         return "Action is not allowed"
     return render_template('register.html', title='Register', form=form)
+
 
 @app.route("/info")
 def info():
