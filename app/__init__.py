@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 from flask_moment import Moment
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="D:/flaskProject/static")
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)

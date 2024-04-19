@@ -28,10 +28,10 @@ def index():
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
+            flash('Your file has been uploaded successfully!')
         post = Post(body=form.post.data, author=current_user, image_path=file_path)
         db.session.add(post)
         db.session.commit()
-        flash('Your file has been uploaded successfully!')
         flash('Your post is now live!')
         return redirect(url_for('index'))
     posts = Post.query.order_by(Post.timestamp).all()[::-1]
