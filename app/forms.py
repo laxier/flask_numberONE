@@ -38,6 +38,6 @@ class RegistrationForm(FlaskForm):
 
 class PostForm(FlaskForm):
     post = TextAreaField('Say something', validators=[DataRequired(), Length(min=1, max=140)])
-    upload = FileField('image', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
+    upload = FileField('Прикрепи фотографию! (не обязательно)', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
     # upload = FileField('image', validators=[FileRequired(), ])
     submit = SubmitField('Submit')

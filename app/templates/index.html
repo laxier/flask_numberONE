@@ -10,7 +10,10 @@
         {% for error in form.post.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-        {{ form.upload() }}
+        <div style="display: flex; justify-content: space-between;">
+            {{ form.upload.label() }}
+            {{ form.upload() }}
+        </div>
         {% for error in form.upload.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
