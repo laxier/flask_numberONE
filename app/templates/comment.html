@@ -61,8 +61,8 @@
                 <div class="modal-body">
                     <form action="" method="post">
                         {{ form.hidden_tag() }}
+                        {{ form.post.label(class_="col-sm-2 col-form-label") }}
                         <div class="form-floating">
-                            {{ form.post.label }}
                             {{ form.post(size=32, class_="form-control") }}
                         </div>
                         <p>

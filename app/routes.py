@@ -89,8 +89,7 @@ def delete_post(id):
             file_path=to_delete.image_path
             if os.path.exists(file_path):
                 os.remove(file_path)
-            else:
-                return "File does not exist"
+            flash('Post deleted')
             return redirect('/')
         except:
             return "There was a problem"
@@ -105,6 +104,7 @@ def delete_comm(commID,id):
         try:
             db.session.delete(to_delete)
             db.session.commit()
+            flash('Comment deleted')
             return redirect(f'/comment/{commID}')
         except:
             return "There was a problem"
@@ -123,7 +123,7 @@ def comment_post(id):
                           author = current_user)
         db.session.add(comment)
         db.session.commit()
-        flash('You have commented om the post')
+        flash('You have commented on the post')
         return redirect(f'/comment/{id}')
     return render_template('comment.html', title=f'Пост {id}', form=form, post=post, comments=comments)
 
