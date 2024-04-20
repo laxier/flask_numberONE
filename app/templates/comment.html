@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .link-grey {
+        color: #aaa;
+    }
+
+    .link-grey:hover {
+        color: #00913b;
+    }
+</style>
+<main class="container">
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <h1 class="display-4 fst-italic" style="font-size: 30px;">{{ moment(post.timestamp).format('lll')}} {{
+            post.author.username }} says: </h1>
+        <p class="lead my-3" style="font-size: 20px;">{{ post.body }}</p>
+        {% if post.image_path %}
+        <p class="lead my-3" style="font-size: 20px;"><img src="../{{post.image_path}}" alt="Post Image" height="400">
+        </p>
+        {% endif %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Комментарий</button>
+        {% if current_user.id == post.author.id or current_user.username == 'admin'%}
+        <a href="/delete/{{post.id}}" class="btn btn-outline-secondary">Delete</a>
+        {% endif %}
+    </div>
+    <div class="container">
+        {% for comment in comments %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex flex-start">
+                    <div class="w-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="text-primary fw-bold mb-0">
+                                {{comment.author.username}}
+                                <span class="text-dark ms-2">{{comment.body}}</span>
+                            </h6>
+                            <p class="mb-0">{{moment(comment.timestamp).format('lll')}}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="small mb-0">
+                                {% if current_user.id == comment.author.id or current_user.username == 'admin'%}
+                                <a href="/comment/{{post.id}}/delete/{{comment.id}}" class="link-grey">Remove</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Введите комментарий</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post">
+                        {{ form.hidden_tag() }}
+                        <div class="form-floating">
+                            {{ form.post.label }}
+                            {{ form.post(size=32, class_="form-control") }}
+                        </div>
+                        <p>
+                            {% for error in form.post.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </p>
+                        <p>{{ form.submit(class_="btn btn-primary w-100 py-2") }}</p>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    {% endblock %}

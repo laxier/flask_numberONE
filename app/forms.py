@@ -41,3 +41,8 @@ class PostForm(FlaskForm):
     upload = FileField('Прикрепи фотографию! (не обязательно)', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
     # upload = FileField('image', validators=[FileRequired(), ])
     submit = SubmitField('Submit')
+
+class CommentForm(FlaskForm):
+    post = TextAreaField('Comment:', validators=[DataRequired(), Length(min=1, max=140)])
+
+    submit = SubmitField('Submit')

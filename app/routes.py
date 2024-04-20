@@ -1,9 +1,8 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
-from app.forms import LoginForm
-from app.forms import RegistrationForm
-from app.forms import PostForm
-from app.models import Post
+from app.forms import LoginForm, RegistrationForm
+from app.forms import PostForm, CommentForm
+from app.models import Post, Comment
 from flask import request
 from flask_login import current_user, login_user
 from flask_login import logout_user
@@ -81,19 +80,52 @@ def logout():
 def delete_post(id):
     to_delete = Post.query.get_or_404(id)
     if to_delete.author.id == current_user.id or current_user.username == 'admin':
+        db.session.delete(to_delete)
+        db.session.commit()
         try:
+            db.session.delete(to_delete)
+            db.session.commit()
+
             file_path=to_delete.image_path
             if os.path.exists(file_path):
                 os.remove(file_path)
-            db.session.delete(to_delete)
-            db.session.commit()
+            else:
+                return "File does not exist"
             return redirect('/')
         except:
             return "There was a problem"
     else:
         return "Action is not allowed"
-    return render_template('register.html', title='Register', form=form)
+    return redirect(url_for('index'))
 
+@app.route('/comment/<int:commID>/delete/<int:id>')
+def delete_comm(commID,id):
+    to_delete = Comment.query.get_or_404(id)
+    if to_delete.author.id == current_user.id or current_user.username == 'admin':
+        try:
+            db.session.delete(to_delete)
+            db.session.commit()
+            return redirect(f'/comment/{commID}')
+        except:
+            return "There was a problem"
+    else:
+        return "Action is not allowed"
+    return redirect(f'/comment/{id}')
+
+@app.route('/comment/<int:id>', methods=['GET', 'POST'])
+def comment_post(id):
+    form = CommentForm()
+    post = Post.query.get_or_404(id)
+    comments = Comment.query.filter_by(post_id=id).order_by(Comment.timestamp).all()[::-1]
+    if form.validate_on_submit():
+        comment = Comment(body = form.post.data,
+                          post = post,
+                          author = current_user)
+        db.session.add(comment)
+        db.session.commit()
+        flash('You have commented om the post')
+        return redirect(f'/comment/{id}')
+    return render_template('comment.html', title=f'Пост {id}', form=form, post=post, comments=comments)
 
 @app.route("/info")
 def info():
