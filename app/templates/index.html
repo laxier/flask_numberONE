@@ -29,7 +29,7 @@
         {% if post.image_path %}
         <p class="lead my-3" style="font-size: 20px;"><img src="../{{post.image_path}}" alt="Post Image" height="400"></p>
         {% endif %}
-        <a href="/comment/{{post.id}}" class="btn btn-outline-secondary">Комментарии</a>
+        <a href="/post/{{post.id}}" class="btn btn-outline-secondary">Комментарии</a>
         {% if current_user.id == post.author.id or current_user.username == 'admin'%}
         <a href="/delete/{{post.id}}" class="btn btn-outline-secondary">Delete</a>
         {% endif %}

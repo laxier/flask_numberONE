@@ -97,7 +97,7 @@ def delete_post(id):
         return "Action is not allowed"
     return redirect(url_for('index'))
 
-@app.route('/comment/<int:commID>/delete/<int:id>')
+@app.route('/post/<int:commID>/delete/<int:id>')
 def delete_comm(commID,id):
     to_delete = Comment.query.get_or_404(id)
     if to_delete.author.id == current_user.id or current_user.username == 'admin':
@@ -105,14 +105,14 @@ def delete_comm(commID,id):
             db.session.delete(to_delete)
             db.session.commit()
             flash('Comment deleted')
-            return redirect(f'/comment/{commID}')
+            return redirect(f'/post/{commID}')
         except:
             return "There was a problem"
     else:
         return "Action is not allowed"
-    return redirect(f'/comment/{id}')
+    return redirect(f'/post/{id}')
 
-@app.route('/comment/<int:id>', methods=['GET', 'POST'])
+@app.route('/post/<int:id>', methods=['GET', 'POST'])
 def comment_post(id):
     form = CommentForm()
     post = Post.query.get_or_404(id)
@@ -124,8 +124,8 @@ def comment_post(id):
         db.session.add(comment)
         db.session.commit()
         flash('You have commented on the post')
-        return redirect(f'/comment/{id}')
-    return render_template('comment.html', title=f'Пост {id}', form=form, post=post, comments=comments)
+        return redirect(f'/post/{id}')
+    return render_template('post.html', title=f'Пост {id}', form=form, post=post, comments=comments)
 
 @app.route("/info")
 def info():
