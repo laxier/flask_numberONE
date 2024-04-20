@@ -1,22 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-    .link-grey {
-        color: #aaa;
-    }
-
-    .link-grey:hover {
-        color: #00913b;
-    }
-</style>
 <main class="container">
     <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
         <h1 class="display-4 fst-italic" style="font-size: 30px;">{{ moment(post.timestamp).format('lll')}} {{
             post.author.username }} says: </h1>
         <p class="lead my-3" style="font-size: 20px;">{{ post.body }}</p>
         {% if post.image_path %}
-        <p class="lead my-3" style="font-size: 20px;"><img src="../{{post.image_path}}" alt="Post Image" height="400">
+        <p class="lead my-3" style="font-size: 20px;"><img class="post-image" src="../{{post.image_path}}"
+                                                           alt="Post Image">
         </p>
         {% endif %}
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Комментарий</button>
@@ -62,9 +54,7 @@
                     <form action="" method="post">
                         {{ form.hidden_tag() }}
                         {{ form.post.label(class_="col-sm-2 col-form-label") }}
-                        <div class="form-floating">
-                            {{ form.post(size=32, class_="form-control") }}
-                        </div>
+                        {{ form.post(size=32, class_="form-control") }}
                         <p>
                             {% for error in form.post.errors %}
                             <span style="color: red;">[{{ error }}]</span>

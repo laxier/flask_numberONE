@@ -5,8 +5,25 @@
     {% else %}
     <title>whatsapp школа</title>
     {% endif %}
-    {% block styles %}
+    <style>
+        .link-grey {
+            color: #aaa;
+        }
+
+        .link-grey:hover {
+            color: #00913b;
+        }
+
+        .post-image {
+            max-width: 100%;
+            overflow: hidden;
+            max-height: 500px
+        }
+
+    </style>
     {{ bootstrap.load_css() }}
+    {% block styles %}
+
     {% endblock %}
     {{ moment.include_moment() }}
     {{ moment.locale(auto_detect=True) }}
@@ -59,8 +76,8 @@
 {% block scripts %}{% endblock %}
 </body>
 <footer class="footer mt-auto py-3 bg-body-tertiary">
-<div class="container">
-    <span class="text-body-secondary">ПМ23-2, 2024</span>
-</div>
+    <div class="container">
+        <span class="text-body-secondary">ПМ23-2, 2024</span>
+    </div>
 </footer>
 </html>
