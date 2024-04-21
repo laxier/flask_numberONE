@@ -15,6 +15,7 @@ from app.models import User
 
 import os
 
+
 @app.route('/', methods=["POST", "GET"])
 @app.route('/index', methods=["POST", "GET"])
 @login_required
@@ -25,7 +26,23 @@ def index():
         file = form.upload.data
         if file:
             filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            upload_folder = app.config['UPLOAD_FOLDER']
+
+            # Check if the file already exists in the destination folder
+            if os.path.exists(os.path.join(upload_folder, filename)):
+                # If the file already exists, create a new filename
+                filename, file_extension = os.path.splitext(filename)
+                new_filename = f"{filename}_1{file_extension}"
+                # Continue this loop to find a unique filename
+                i = 1
+                while os.path.exists(os.path.join(upload_folder, new_filename)):
+                    i += 1
+                    new_filename = f"{filename}_{i}{file_extension}"
+
+                # Save the file with the new unique filename
+                file_path = os.path.join(upload_folder, new_filename)
+            else:
+                file_path = os.path.join(upload_folder, filename)
             file.save(file_path)
             flash('Your file has been uploaded successfully!')
         post = Post(body=form.post.data, author=current_user, image_path=file_path)
@@ -86,7 +103,7 @@ def delete_post(id):
             db.session.delete(to_delete)
             db.session.commit()
 
-            file_path=to_delete.image_path
+            file_path = to_delete.image_path
             if os.path.exists(file_path):
                 os.remove(file_path)
             flash('Post deleted')
@@ -97,8 +114,9 @@ def delete_post(id):
         return "Action is not allowed"
     return redirect(url_for('index'))
 
+
 @app.route('/post/<int:commID>/delete/<int:id>')
-def delete_comm(commID,id):
+def delete_comm(commID, id):
     to_delete = Comment.query.get_or_404(id)
     if to_delete.author.id == current_user.id or current_user.username == 'admin':
         try:
@@ -112,20 +130,22 @@ def delete_comm(commID,id):
         return "Action is not allowed"
     return redirect(f'/post/{id}')
 
+
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
 def comment_post(id):
     form = CommentForm()
     post = Post.query.get_or_404(id)
     comments = Comment.query.filter_by(post_id=id).order_by(Comment.timestamp).all()[::-1]
     if form.validate_on_submit():
-        comment = Comment(body = form.post.data,
-                          post = post,
-                          author = current_user)
+        comment = Comment(body=form.post.data,
+                          post=post,
+                          author=current_user)
         db.session.add(comment)
         db.session.commit()
         flash('You have commented on the post')
         return redirect(f'/post/{id}')
     return render_template('post.html', title=f'Пост {id}', form=form, post=post, comments=comments)
+
 
 @app.route("/info")
 def info():

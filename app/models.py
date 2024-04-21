@@ -33,7 +33,6 @@ class Post(db.Model):
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id), index=True)
     author: so.Mapped[User] = so.relationship(back_populates='posts')
     image_path: so.Mapped[str] = so.mapped_column(sa.String(140))
-
     comments: so.WriteOnlyMapped['Comment'] = so.relationship(back_populates='post', cascade = "all, delete-orphan", passive_deletes=True)
 
     def __repr__(self):
@@ -46,11 +45,11 @@ class Comment(db.Model):
     timestamp: so.Mapped[datetime] = so.mapped_column(index=True, default=lambda: datetime.now(timezone.utc))
     post: so.Mapped[Post] = so.relationship(back_populates='comments')
     post_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(Post.id, ondelete='CASCADE'), index=True)
-
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id), index=True)
     author: so.Mapped[User] = so.relationship(back_populates='comments')
 
 
 @login.user_loader
 def load_user(id):
-    return db.session.get(User, int(id))
+    return db.session.query(User).get(id)
+
