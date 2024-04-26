@@ -14,4 +14,4 @@ if __name__ == "__main__":
     #                         password = generate_password_hash('12345678'),
     #                         email="amdin@example.com"))
     #     db.session.commit()
-    app.run(debug=True)
+    app.run()
