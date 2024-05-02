@@ -13,6 +13,14 @@ import sqlalchemy as sa
 from app import db
 from app.models import User
 
+from LSTM_2 import study_lstm
+from LSTM_2_predict import get_real_pericted
+
+from RNN import study_rnn
+from RNN_2 import predict_spam
+
+from Gradient_random import grad_random
+from Gradient_test import study_grad
 import os
 
 
@@ -150,3 +158,36 @@ def comment_post(id):
 @app.route("/info")
 def info():
     return render_template('info.html')
+
+@app.route("/neuro/lstm")
+def lstm():
+    start_date = '2015-02-11'
+    end_date = '2015-03-01'
+    df = get_real_pericted(start_date, end_date)
+    dict_data = df.to_dict(orient='records')
+    return render_template('lstm.html', data=dict_data)
+
+@app.route("/neuro/rnn")
+def rnn():
+    predict = predict_spam()
+    return render_template('RNN.html', predict=predict)
+
+@app.route("/neuro/gradient")
+def gradient():
+    random_data_processed, y_random_pred = grad_random()
+    return render_template('gradient.html', real=random_data_processed, pred =y_random_pred)
+
+@app.route("/neuro/lstm/study")
+def lstm_study():
+    flash(study_lstm(1))
+    return redirect("/neuro/lstm")
+
+@app.route("/neuro/rnn/study")
+def rnn_study():
+    flash(study_rnn(1))
+    return redirect("/neuro/rnn")
+
+@app.route("/neuro/gradient/study")
+def gradient_study():
+    flash(study_grad())
+    return redirect("/neuro/gradient")

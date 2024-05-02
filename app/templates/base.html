@@ -6,6 +6,63 @@
     <title>whatsapp школа</title>
     {% endif %}
     <style>
+        .table-container {
+            display: flex;
+            flex-flow: column nowrap;
+            background-color: white;
+            width: 95%;
+            margin: 0 auto;
+            margin-bottom: 2%;
+            border-radius: 4px;
+            border: 1px solid #DADADA;
+            box-shadow: 0px 1px 4px rgba(0, 0, 0, .08);
+        }
+
+        .table-row {
+            display: flex;
+            flex-flow: row nowrap;
+            width: 100%;
+            border-bottom: 1px solid #dadada;
+        }
+
+        .heading {
+            background-color: #ececec;
+            color: #3e3e3e;
+            font-weight: bold;
+        }
+
+        .row-item {
+            display: flex;
+            flex: 1;
+            font-size: 14px;
+            padding: 8px 0;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.15s ease-in-out;
+        }
+
+        .row-item:hover {
+            cursor: pointer;
+            background-color: #F0F0F0;
+            /*   box-shadow: 0px 1px 4px rgba(0, 0, 0, .08); */
+        }
+
+        .row-sub-container {
+            display: flex;
+            flex-flow: column nowrap;
+            flex: 1;
+        }
+
+        .row-sub-container.row-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #dadada;
+        }
+
+        .table-row:last-child,
+        .row-sub-container.row-item:last-child {
+            border-bottom: 0;
+        }
+
         .container-img {
             height: 300px;
         }
@@ -42,9 +99,9 @@ padding-bottom: 1%; padding-top: 1%; justify-content:space-around;">
             <li><a href="/info" class="nav-link px-2 link-dark">About</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Media</a></li>
             <li><a class="nav-link px-2 link-dark">Нейронки</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">1</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">2</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">3</a></li>
+            <li><a href="/neuro/lstm" class="nav-link px-2 link-dark">LSTM</a></li>
+            <li><a href="/neuro/rnn" class="nav-link px-2 link-dark">RNN</a></li>
+            <li><a href="/neuro/gradient" class="nav-link px-2 link-dark">Градиентный Спуск</a></li>
         </ul>
         {% if current_user.is_anonymous %}
         <a class="btn btn-outline-primary me-2" href="{{ url_for('login') }}">Login</a>

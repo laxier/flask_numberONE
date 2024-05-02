@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <a href="/neuro/lstm/study" class="btn btn-outline-secondary">переобучить</a>
+    <div class="table-container">
+        <div class="table-row heading">
+            {% for key in data[0].keys() %}
+            <div class="row-item">{{ key }}</div>
+            {% endfor %}
+        </div>
+        {% for record in data %}
+        <div class="table-row">
+            {% for value in record.values() %}
+            <div class="row-item">{{ value }}</div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
