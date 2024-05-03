@@ -9,6 +9,7 @@ from keras.callbacks import EarlyStopping
 from sklearn.metrics import r2_score
 from tensorflow.keras.metrics import MeanAbsoluteError
 import joblib
+import os
 
 
 def study_lstm(epos):

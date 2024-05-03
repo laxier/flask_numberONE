@@ -9,7 +9,7 @@
       <excludeFolder url="file://$MODULE_DIR$/static/images" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.11" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (pythonProject flask type)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="@popperjs/core" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />

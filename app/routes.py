@@ -184,7 +184,7 @@ def lstm_study():
 
 @app.route("/neuro/rnn/study")
 def rnn_study():
-    flash(study_rnn(1))
+    flash(study_rnn(10))
     return redirect("/neuro/rnn")
 
 @app.route("/neuro/gradient/study")

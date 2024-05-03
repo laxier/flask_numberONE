@@ -29,9 +29,12 @@ def predict_spam():
         "char_freq_[", "char_freq_!", "char_freq_$", "char_freq_#", "capital_run_length_average",
         "capital_run_length_longest", "capital_run_length_total", "label"
     ]
+    ans=[]
     data = pd.read_csv(file_path, header=None, names=columns)
-
     model = load_model('model_linear.keras')
-    return predict_random_spam(data, model)
+    for i in range(10):
+        ans.append(predict_random_spam(data, model))
 
-# print(predict_spam())
+    return ans
+
+    # print(predict_spam())

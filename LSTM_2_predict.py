@@ -2,7 +2,7 @@ import yfinance as yf
 import pandas as pd
 from keras.models import load_model
 import joblib
-
+import os
 def predict_day_price(date, loaded_model, df, scaler, sequence_length=100):
     # Преобразование введенной даты в формат datetime
     # date = pd.to_datetime(date_str)
@@ -38,8 +38,11 @@ def get_real_pericted(start_date, end_date):
 
     df.index = pd.to_datetime(df.index)
     df.fillna(method='ffill', inplace=True)
-    loaded_model = load_model('D:\\flaskProject\\model_linear.keras')
-    scaler = joblib.load('D:\\flaskProject\\btc_price_scaler.pkl')
+    current_path = os.getcwd()
+    file_path = os.path.join(current_path, 'model_linear.keras')
+    loaded_model = load_model(file_path)
+    file_path = os.path.join(current_path, 'btc_price_scaler.pkl')
+    scaler = joblib.load(file_path)
 
     # Получение данных за год 2015
     df_time = df.loc[start_date:end_date]
