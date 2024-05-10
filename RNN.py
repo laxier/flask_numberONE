@@ -1,12 +1,14 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
+from keras.callbacks import Callback
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout, Reshape
 from tensorflow.keras.optimizers import Adam
 import os
 
-def study_rnn(epos):
+
+def study_rnn(epos, socketio):
     # Загрузка датасета
     current_path = os.getcwd()
     file_path = os.path.join(current_path, 'spambase.data')
@@ -44,8 +46,13 @@ def study_rnn(epos):
 
     model.compile(optimizer=Adam(), loss='binary_crossentropy', metrics=['accuracy'])
 
+    class SocketCallback(Callback):
+        def on_epoch_end(self, epoch, logs=None):
+            progress = {'epoch': epoch, 'loss': logs['loss'], 'val_loss': logs['val_loss']}
+            socketio.emit('progress_update', progress)
+
     # Обучение модели
-    history = model.fit(X_train, y_train, epochs=epos, validation_data=(X_test, y_test), verbose=0)
+    history = model.fit(X_train, y_train, epochs=epos, validation_data=(X_test, y_test), verbose=0, callbacks=[SocketCallback()])
 
     # Оценка модели
     loss, accuracy = model.evaluate(X_test, y_test, verbose=0)

@@ -9,6 +9,7 @@ COPY . .
 
 ENV DATABASE_URL="mysql://root:PolinaZh1301*@localhost/blog"
 
+
 EXPOSE 5000
 
 CMD ["flask", "run", "--host=0.0.0.0"]

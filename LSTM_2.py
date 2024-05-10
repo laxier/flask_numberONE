@@ -72,13 +72,11 @@ def study_lstm(epos):
         # model.compile(optimizer='adam', loss='mean_squared_error')
         model.compile(optimizer='adam', loss='mean_squared_error', metrics=[MeanAbsoluteError()])
 
-
-        # EarlyStopping
+        # Определение функции обратного вызова для отправки прогресса обучения через сокеты
         early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True, verbose=0)
-
-        # Обучение модели с использованием EarlyStopping
-        history = model.fit(x_train, y_train, epochs=epos, batch_size=64, verbose=0, validation_data=(x_test, y_test), callbacks=[early_stopping])
-
+        # Обучение модели с использованием функции обратного вызова SocketCallback
+        history = model.fit(x_train, y_train, epochs=epos, batch_size=64, verbose=0, validation_data=(x_test, y_test),
+                            callbacks=[early_stopping])
         y_predict = model.predict(x_test, verbose=0)
         model.save("model_linear0.keras")
         # close_prices = df[['Close']].values

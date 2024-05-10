@@ -1,9 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <a href="/neuro/rnn/study" class="btn btn-outline-secondary">переобучить</a>
+    <div class="progress">
+        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
+             aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <select id="epos-dropdown" name="fruits">
+        {% for i in range(1, 31) %}
+        <option value="{{i}}">{{ i }}</option>
+        {% endfor %}
+    </select>
+    <a id="train-link" class="btn btn-outline-secondary">переобучить</a>
     {% for element in predict %}
     <p>{{element}}</p>
     {% endfor %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+<script>
+    document.getElementById("train-link").addEventListener("click", function (event) {
+        var epos = document.getElementById("epos-dropdown").value
+        console.log(epos)
+        $('#progress-bar').css('width', 0 + '%').attr('aria-valuenow', 0);
+        $.ajax({
+            url: '/api/neuro/rnn/study',
+            method: 'GET',
+            data: {epos: epos}, // Передаем параметр Epos
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        var socket = io();
+        var width = 0;
+        var increment = 100 / epos
+        socket.on('progress_update', function (progress) {
+            var epoch = progress.epoch;
+            var loss = progress.loss;
+            var val_loss = progress.val_loss;
+            if (width >= 100) {
+                clearInterval(interval);
+                $('#progress-modal').modal('hide');
+            } else {
+                width += increment; // Увеличиваем ширину прогресс-бара
+                $('#progress-bar').css('width', width + '%').attr('aria-valuenow', width);
+            }
+            console.log("Epoch: " + epoch + ", Loss: " + loss + ", Validation Loss: " + val_loss);
+        });
+    });
+</script>
 {% endblock %}
